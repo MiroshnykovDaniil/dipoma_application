@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    database: MYSQl
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://127.0.0.1:3306/diploma
+    username: root
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 516233876888-aiig0b308l5989keefvttcnr6t4ll2al.apps.googleusercontent.com
+            client-secret: 3L--2mfgjMViShlQmrHNGZU5
