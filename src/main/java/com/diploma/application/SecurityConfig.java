@@ -13,7 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity security) throws Exception
     {
         security.authorizeRequests()
-                .antMatchers("/","/login/google","/error/**").permitAll().anyRequest().anonymous()
+                .antMatchers("/**","/login/google","/error/**").permitAll().anyRequest().anonymous()
                 .and()
                 .oauth2Login();
 
