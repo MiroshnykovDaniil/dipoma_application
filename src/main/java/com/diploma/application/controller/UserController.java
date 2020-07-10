@@ -1,7 +1,7 @@
 package com.diploma.application.controller;
 
 import com.diploma.application.repository.UserRepository;
-import com.diploma.application.user.User;
+import com.diploma.application.domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
