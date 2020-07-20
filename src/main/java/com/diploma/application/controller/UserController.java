@@ -2,6 +2,7 @@ package com.diploma.application.controller;
 
 import com.diploma.application.repository.UserRepository;
 import com.diploma.application.domain.User;
+import com.diploma.application.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
@@ -13,23 +14,23 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
     private final Logger logger = LogManager.getLogger();
+    private final UserService userService;
 
-    UserController(UserRepository userRepository){
-        this.userRepository = userRepository;
+    UserController(UserService userService){
+        this.userService = userService;
     }
 
     @GetMapping(path = "/all")
-    public List<User> getUsers(){
-        logger.info(userRepository.findAll());
-        return userRepository.findAll();
+    public List<User> findAll(){
+        logger.info("UserController: FindAll");
+        return userService.findAll();
     }
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable String id){
-        logger.info("getting users");
-        return userRepository.getOne(id);
+        logger.info("UserController: getUserById");
+        return userService.findById(id);
     }
 
     @PostMapping("/register")
@@ -37,10 +38,8 @@ public class UserController {
             @RequestParam String name,
             @RequestParam String pass
             ){
-        User user = new User();
-        user.setName(name);
-        user.setPassword(pass);
         logger.info("Creating new user");
-        userRepository.save(user);
+        userService.register(name,pass);
+        logger.info("User created");
     }
 }

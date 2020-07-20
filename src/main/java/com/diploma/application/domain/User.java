@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,6 +31,11 @@ public class User implements UserDetails {
 
     @Email(message = "email is not correct")
     private String email;
+
+    @CollectionTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,5 +65,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 }
