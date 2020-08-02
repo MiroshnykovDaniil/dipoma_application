@@ -1,7 +1,7 @@
 package com.diploma.application.service;
 
-import com.diploma.application.domain.Role;
-import com.diploma.application.domain.User;
+import com.diploma.application.entity.Role;
+import com.diploma.application.entity.User;
 import com.diploma.application.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

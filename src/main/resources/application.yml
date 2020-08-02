@@ -4,6 +4,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     platform: mysql
     url: jdbc:mysql://127.0.0.1:3306/diploma
@@ -15,3 +18,13 @@ spring:
           google:
             client-id: 516233876888-aiig0b308l5989keefvttcnr6t4ll2al.apps.googleusercontent.com
             client-secret: 3L--2mfgjMViShlQmrHNGZU5
+
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpirationMsec: 864000000
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+      - myandroidapp://oauth2/redirect
+      - myiosapp://oauth2/redirect
