@@ -1,4 +1,4 @@
-package com.diploma.application.entity;
+package com.diploma.application.model;
 
 import org.springframework.security.core.GrantedAuthority;
 

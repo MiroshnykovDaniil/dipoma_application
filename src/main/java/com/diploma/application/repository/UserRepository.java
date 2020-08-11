@@ -1,6 +1,6 @@
 package com.diploma.application.repository;
 
-import com.diploma.application.entity.User;
+import com.diploma.application.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

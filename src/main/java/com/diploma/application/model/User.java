@@ -1,4 +1,4 @@
-package com.diploma.application.entity;
+package com.diploma.application.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.diploma.application.controller;
 
-import com.diploma.application.entity.User;
+import com.diploma.application.model.User;
 import com.diploma.application.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

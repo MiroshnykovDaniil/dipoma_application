@@ -2,7 +2,7 @@ package com.diploma.application.user.controller;
 
 import com.diploma.application.DiplomaApplicationTests;
 import com.diploma.application.controller.UserController;
-import com.diploma.application.entity.User;
+import com.diploma.application.model.User;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

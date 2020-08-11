@@ -2,7 +2,7 @@ package com.diploma.application.user.service;
 
 
 import com.diploma.application.DiplomaApplicationTests;
-import com.diploma.application.entity.User;
+import com.diploma.application.model.User;
 import com.diploma.application.repository.UserRepository;
 import com.diploma.application.service.UserService;
 import org.junit.jupiter.api.Test;
