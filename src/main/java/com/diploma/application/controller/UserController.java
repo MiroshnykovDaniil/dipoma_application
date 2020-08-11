@@ -41,6 +41,7 @@ public class UserController {
         logger.info("User created");
     }
 
+
     @PostMapping("/login")
     public void login(
             @RequestParam String name,
