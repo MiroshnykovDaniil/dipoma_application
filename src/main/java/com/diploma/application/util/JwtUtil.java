@@ -3,7 +3,8 @@ import com.diploma.application.config.AppProperties;
 import com.diploma.application.model.User;
 import com.diploma.application.security.UserPrincipal;
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,9 @@ import java.util.Date;
 
 @Service
 public class JwtUtil {
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+   // private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+   private final Logger logger = LogManager.getLogger();
+
 
     public JwtUtil(AppProperties appProperties) {
         this.appProperties = appProperties;
@@ -63,15 +66,26 @@ public class JwtUtil {
         return claims.getSubject();
     }
 
-    public String createToken(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+    public String createToken(Authentication authentication) throws Exception {
+        logger.info("createToken: Authentication:"+authentication.toString());
+        logger.info("createToken: Authentication: principals:"+authentication.getPrincipal().toString());
+        logger.info("createToken: Authentication: cred:"+authentication.getCredentials().toString());
+        logger.info("createToken: Authentication: name:"+authentication.getName().toString());
+
+
+        String id;
+        if (authentication.getPrincipal() instanceof UserPrincipal)
+            id = ((UserPrincipal) authentication.getPrincipal()).getId();
+        else // ((UserPrincipal)authentication.getAuthorities() instanceof UserPrincipal)
+            id = (String) authentication.getPrincipal();
+        logger.info("id:"+id );
         System.out.println("createToken");
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
         System.out.println("createToken: builder");
         return Jwts.builder()
-                .setSubject(user.getId())
+                .setSubject(id)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())

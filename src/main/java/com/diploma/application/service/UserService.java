@@ -138,7 +138,7 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
         User user = userRepository.findByEmail(email);
         if (user == null) throw new Exception("USER IS NULL");
 
-        System.out.println("returning User");
+        System.out.println("returning User, with email:"+user.getEmail()+" and Id:"+user.getId());
 
         return user;
        // return UserPrincipal.create(user);

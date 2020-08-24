@@ -6,6 +6,7 @@ import com.diploma.application.model.AuthenticationRequest;
 import com.diploma.application.model.AuthenticationResponse;
 import com.diploma.application.model.User;
 import com.diploma.application.repository.UserRepository;
+import com.diploma.application.security.EmailPasswordAuthenticationProvider;
 import com.diploma.application.security.UserPrincipal;
 import com.diploma.application.service.UserService;
 import com.diploma.application.util.*;
@@ -40,7 +41,7 @@ import java.net.URI;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
+    private final EmailPasswordAuthenticationProvider authenticationManager;
     private final UserService userService;
     private final JwtUtil jwtTokenUtil;
 
@@ -52,7 +53,7 @@ public class AuthController {
 
 
 
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtTokenUtil) {
+    public AuthController(EmailPasswordAuthenticationProvider authenticationManager, UserService userService, JwtUtil jwtTokenUtil) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtTokenUtil = jwtTokenUtil;
@@ -70,7 +71,7 @@ public class AuthController {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.getName(),
+                        loginRequest.getEmail(),
                         loginRequest.getPassword()
                 )
         );
