@@ -1,59 +1,95 @@
 package com.diploma.application.util;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.diploma.application.config.AppProperties;
+import com.diploma.application.model.User;
+import com.diploma.application.security.UserPrincipal;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
+@Service
 public class JwtUtil {
-    //todo It's not really cool to keep secret right here with this shape, need to think of better solution like property file
-    private String SECRET_KEY = "secret";
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    // Here we extract the username from token
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public JwtUtil(AppProperties appProperties) {
+        this.appProperties = appProperties;
     }
 
-    // Here we extract the account expiration date from existing token
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+    private AppProperties appProperties;
+
+
+    public Boolean validateToken(String token) {
+        try {
+            System.out.println("Validation");
+            System.out.println(token);
+            System.out.println(appProperties.getAuth());
+            System.out.println(appProperties.getAuth().getTokenSecret());
+
+            Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(token);
+            System.out.println("End of validation");
+            return true;
+        } catch (SignatureException ex) {
+            logger.error("Invalid JWT signature");
+        } catch (MalformedJwtException ex) {
+            logger.error("Invalid JWT token");
+        } catch (ExpiredJwtException ex) {
+            logger.error("Expired JWT token");
+        } catch (UnsupportedJwtException ex) {
+            logger.error("Unsupported JWT token");
+        } catch (IllegalArgumentException ex) {
+            logger.error("JWT claims string is empty. "+ex,ex);
+        }
+        return false;
     }
 
-    // this method takes token and with claimsResolver it figures our what the claims are
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-    }
-
-    // here we check if token is expired or not
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    // method for generating tokens on UserDetails by createToken method
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+    public String getUserIdFromToken(String token) {
+        System.out.println("getUserIdFromToken");
+        System.out.println(Jwts.parser()
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
+                .parseClaimsJws(token)
+                .getBody());
+        Claims claims = Jwts.parser()
+                .setSigningKey(appProperties.getAuth().getTokenSecret())
+                .parseClaimsJws(token)
+                .getBody();
+        System.out.println(claims.getSubject());
+        return claims.getSubject();
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    public String createToken(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        System.out.println("createToken");
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+        System.out.println("createToken: builder");
+        return Jwts.builder()
+                .setSubject(user.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
+                .compact();
     }
 
-    // Here we validate is username in token the same with username in userDetails
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public String createToken(User user) {
+        logger.trace("CREATE TOKEN !!!!");
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
+
+        return Jwts.builder()
+                .setSubject(user.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
+                .compact();
     }
+
+
 }
