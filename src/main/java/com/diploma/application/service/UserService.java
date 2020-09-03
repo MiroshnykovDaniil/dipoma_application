@@ -8,19 +8,20 @@ import com.diploma.application.repository.UserRepository;
 import com.diploma.application.security.UserPrincipal;
 import com.diploma.application.security.oauth2.OAuth2UserInfo;
 import com.diploma.application.security.oauth2.OAuth2UserInfoFactory;
+import com.diploma.application.util.SignUpRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -32,6 +33,9 @@ import org.springframework.util.StringUtils;
 public class UserService extends DefaultOAuth2UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     UserService(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -59,6 +63,22 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
         return;
+    }
+
+    public User registerLocal(SignUpRequest signUpRequest){
+        User user = new User();
+        user.setName(signUpRequest.getName());
+        user.setEmail(signUpRequest.getEmail());
+        user.setPassword(signUpRequest.getPassword());
+        user.setProvider(AuthProvider.local);
+        Set<Role> role = new HashSet();
+        role.add(Role.USER);
+        user.setRoles(role);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return user;
+
     }
 
     public User findByUserName(String name){
@@ -142,5 +162,14 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
 
         return user;
        // return UserPrincipal.create(user);
+    }
+
+    public void addTeacherRole(User user){
+        Set roles = user.getRoles();
+        if (!roles.contains(Role.TEACHER)&&roles.contains(Role.USER)){
+            roles.add(Role.TEACHER);
+            user.setRoles(roles);
+            userRepository.save(user);
+        }
     }
 }

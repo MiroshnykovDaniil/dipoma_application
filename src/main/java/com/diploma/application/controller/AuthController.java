@@ -87,25 +87,23 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-//        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-//            throw new BadRequestException("Email address already in use.");
-//        }
-        System.out.println(signUpRequest);
 
         // Creating user's account
-        User user = new User();
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
+//        User user = new User();
+//        user.setName(signUpRequest.getName());
+//        user.setEmail(signUpRequest.getEmail());
+//        user.setPassword(signUpRequest.getPassword());
+//        user.setProvider(AuthProvider.local);
+//
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//
+//        User result = userRepository.save(user);
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        User result = userRepository.save(user);
+        User user = userService.registerLocal(signUpRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(result.getId()).toUri();
+                .buildAndExpand(user.getId()).toUri();
 
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully@"));
