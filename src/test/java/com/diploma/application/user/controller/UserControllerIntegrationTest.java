@@ -3,6 +3,8 @@ package com.diploma.application.user.controller;
 import com.diploma.application.DiplomaApplicationTests;
 import com.diploma.application.controller.UserController;
 import com.diploma.application.model.User;
+import com.diploma.application.util.SignUpRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -46,16 +48,33 @@ public class UserControllerIntegrationTest extends DiplomaApplicationTests {
     void manualRegistrationTest() throws Exception{
         String name = "User name";
         String pass = "1234pass";
+        String email = "123@mail.co";
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setEmail(email);
+        signUpRequest.setName(name);
+        signUpRequest.setPassword(pass);
         params.add("name",name);
-        params.add("pass",pass);
+        params.add("email",email);
+        params.add("password",pass);
         mockMvc.perform(
-                post("/users/register")
+                post("/auth/signup")
                 .contentType("application/json")
-                .params(params)
+                .content(asJsonString(signUpRequest))
         )
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(obj);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Test
     void selectAllUsers() throws Exception{
@@ -67,13 +86,13 @@ public class UserControllerIntegrationTest extends DiplomaApplicationTests {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void selectUser() throws Exception{
-        mockMvc.perform(
-                get("/users/0")
-                        .contentType(MediaType.APPLICATION_JSON)
-
-        )
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void selectUser() throws Exception{
+//        mockMvc.perform(
+//                get("/users/me")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//
+//        )
+//                .andExpect(status().isOk());
+//    }
 }
