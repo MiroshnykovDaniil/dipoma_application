@@ -1,6 +1,7 @@
-package com.diploma.application.model;
+package com.diploma.application.model.course;
 
 
+import com.diploma.application.model.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
