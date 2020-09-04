@@ -39,10 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AppProperties appProperties;
 
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserService userService, AppProperties appProperties) {
+    private final PasswordEncoder passwordEncoder;
+
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserService userService, AppProperties appProperties, PasswordEncoder passwordEncoder) {
         this.jwtRequestFilter = jwtRequestFilter;
         this.userService = userService;
         this.appProperties = appProperties;
+        this.passwordEncoder = passwordEncoder;
 
         System.out.println(appProperties.getAuth().getTokenSecret());
         System.out.println(appProperties.getAuth().getTokenExpirationMsec());
@@ -157,13 +160,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
-        .passwordEncoder(passwordEncoder());
+
+        .passwordEncoder(passwordEncoder);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }
 
     @Override
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

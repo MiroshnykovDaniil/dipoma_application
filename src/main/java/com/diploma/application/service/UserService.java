@@ -34,11 +34,12 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
 
     private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    UserService(UserRepository userRepository){
+    private final PasswordEncoder passwordEncoder;
+
+    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override

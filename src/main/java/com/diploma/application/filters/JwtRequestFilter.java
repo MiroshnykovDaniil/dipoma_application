@@ -21,11 +21,14 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private UserService userDetailsService;
+    private final UserService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    public JwtRequestFilter(UserService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
 
     @Override
