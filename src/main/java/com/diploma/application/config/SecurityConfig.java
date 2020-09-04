@@ -33,11 +33,11 @@ import javax.servlet.Filter;
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    private UserService userService;
+    private final UserService userService;
 
-    private AppProperties appProperties;
+    private final AppProperties appProperties;
 
     public SecurityConfig(JwtRequestFilter jwtRequestFilter, UserService userService, AppProperties appProperties) {
         this.jwtRequestFilter = jwtRequestFilter;
