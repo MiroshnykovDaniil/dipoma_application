@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class GroupService {
@@ -22,7 +23,32 @@ public class GroupService {
         Group group = new Group();
         group.setCreator(creator);
         group.setTitle(title);
-        group.setParticipants(new HashSet<>());
+        group.setMembers(new HashSet<>());
+        groupRepository.save(group);
+        return group;
+    }
+
+    public Group addMembers(Group group,Set<User> members){
+        Set<User> currentMembers = group.getMembers();
+
+        currentMembers.addAll(members);
+
+        groupRepository.save(group);
+        return group;
+    }
+
+    public Group addMember(Group group, User user){
+        Set<User> currentMembers = group.getMembers();
+        currentMembers.add(user);
+        group.setMembers(currentMembers);
+        groupRepository.save(group);
+        return group;
+    }
+
+    public Group removeMember(Group group, User user){
+        Set<User> currentMembers = group.getMembers();
+        currentMembers.remove(user);
+        group.setMembers(currentMembers);
         groupRepository.save(group);
         return group;
     }

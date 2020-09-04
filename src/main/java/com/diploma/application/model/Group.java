@@ -29,8 +29,8 @@ public class Group {
     private User creator;
 
     @ManyToMany()
-    @JoinColumn(name = "paricipants_id")
-    private Set<User> participants;
+    @JoinColumn(name = "member_id")
+    private Set<User> members;
 
 
 }

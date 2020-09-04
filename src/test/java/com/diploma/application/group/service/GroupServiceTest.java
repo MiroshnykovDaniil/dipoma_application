@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -38,5 +41,60 @@ public class GroupServiceTest extends DiplomaApplicationTests {
 
 
         assertThat(group.getId()).isNotEmpty();
+    }
+
+    @Test
+    public void addMembersTest(){
+        User user = new User();
+        User user1 = new User();
+        User user2 = new User();
+        User user3 = new User();
+
+        userRepository.save(user);
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
+
+        Set<User> userSet = new HashSet<>();
+        userSet.add(user1);
+        userSet.add(user2);
+        userSet.add(user3);
+
+        Group group = groupService.createGroup(user,"Title");
+
+        groupService.addMembers(group,userSet);
+        assertThat(group.getMembers()).isNotEmpty();
+
+
+    }
+
+    @Test
+    public void addingMemberTest(){
+        User user = new User();
+        User user1 = new User();
+        userRepository.save(user);
+        userRepository.save(user1);
+
+        Group group = groupService.createGroup(user,"Title");
+
+        groupService.addMember(group,user1);
+        assertThat(group.getMembers().contains(user1));
+
+    }
+
+    @Test
+    public void removeMemberTest(){
+        User user = new User();
+        User user1 = new User();
+        userRepository.save(user);
+        userRepository.save(user1);
+
+        Group group = groupService.createGroup(user,"Title");
+
+        groupService.addMember(group,user1);
+        groupService.removeMember(group,user1);
+
+        assertThat(!group.getMembers().contains(user1));
+
     }
 }
