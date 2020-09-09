@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,5 +31,10 @@ public class Course {
     @JoinColumn(name = "creator_id")
     @NotNull
     private User creator;
+
+    @JoinColumn(name = "lesson_id")
+    @OneToMany
+    private Set<Lesson> lessons;
+
 
 }

@@ -1,6 +1,7 @@
 package com.diploma.application.model.course.data.quiz;
 
 
+import com.diploma.application.model.course.data.CourseData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity(name = "quiz")
-public class Quiz {
+public class Quiz extends CourseData {
 
     @Id
     @GeneratedValue(generator = "uuid")
