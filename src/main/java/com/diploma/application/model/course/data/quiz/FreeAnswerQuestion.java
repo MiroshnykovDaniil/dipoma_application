@@ -19,4 +19,9 @@ public class FreeAnswerQuestion extends Question{
 
     private String userAnswer;
 
+    @Override
+    public String getType() {
+        return "free";
+    }
+
 }

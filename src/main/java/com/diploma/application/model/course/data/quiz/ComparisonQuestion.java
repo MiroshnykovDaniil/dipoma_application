@@ -25,7 +25,7 @@ public class ComparisonQuestion extends Question{
 
     @Override
     public String getType() {
-        return "multiple";
+        return "comparison";
     }
 
 
