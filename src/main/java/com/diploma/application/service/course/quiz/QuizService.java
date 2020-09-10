@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 @Service
 public class QuizService {
 
+
     @Autowired
     private QuestionRepository questionRepository;
 
@@ -72,6 +73,7 @@ public class QuizService {
                 ((ComparisonQuestion)question).getAnswers().stream().forEach(answerRepository::save);
             } break;
             case "free":{
+                FreeAnswerQuestion question1 = (FreeAnswerQuestion) question;
                 createVariant(((FreeAnswerQuestion)question).getCorrectAnswer());
             }break;
         }
