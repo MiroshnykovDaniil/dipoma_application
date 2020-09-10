@@ -8,6 +8,7 @@ import com.diploma.application.service.UserService;
 import com.diploma.application.service.course.CourseService;
 import com.diploma.application.util.ApiResponse;
 import com.diploma.application.util.CourseCreateRequest;
+import com.diploma.application.util.LessonCreateRequest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,12 @@ public class CourseController {
                 .body(new ApiResponse(true, "Course was created successfully"));
     }
 
+
+    @PostMapping("/lesson/create")
+    public ResponseEntity<?> createLesson(@Valid @RequestBody LessonCreateRequest createRequest) throws URISyntaxException {
+        Course course = courseService.addLesson(createRequest.getCourse(),createRequest.getTitle(),createRequest.getDescription());
+        return ResponseEntity.created(new URI(course.getId()))
+                .body(new ApiResponse(true, "Lesson for course was created successfully"));
+    }
 
 }

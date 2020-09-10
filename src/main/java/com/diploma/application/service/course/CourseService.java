@@ -41,6 +41,7 @@ public class CourseService {
     }
 
     public Course addLesson(Course course, String title, String description){
+        course = courseRepository.getOne(course.getId());
         Set<Lesson> lessons = course.getLessons();
         Lesson lesson = new Lesson();
         lesson.setTitle(title);
