@@ -37,7 +37,7 @@ public class UserController {
         return userService.findById(userPrincipal.getId());
     }
 
-    @GetMapping("/addTeacherRole")
+    @PostMapping("/addTeacherRole")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addTeacherRole(@CurrentUser UserPrincipal userPrincipal){
         User user = userService.findById(userPrincipal.getId());
