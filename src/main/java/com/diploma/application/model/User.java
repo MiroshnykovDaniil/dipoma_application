@@ -39,7 +39,6 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
 
-
     @NotNull
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;

@@ -47,4 +47,8 @@ public class LessonService {
         lessonRepository.save(lesson);
         return lesson;
     }
+
+    public Lesson getLesson(String id){
+        return lessonRepository.getOne(id);
+    }
 }

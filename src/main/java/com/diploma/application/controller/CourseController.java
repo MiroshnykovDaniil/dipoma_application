@@ -75,4 +75,15 @@ public class CourseController {
                 .body(new ApiResponse(true, "Quiz for lesson was created successfully"));
     }
 
+    @GetMapping("/lesson")
+    public Lesson getLesson(@RequestParam String id){
+        return lessonService.getLesson(id);
+    }
+
+    @GetMapping()
+    public Course getCourse(@RequestParam String id){
+        logger.info("CourseController: getCourse: id:"+id);
+        return courseService.getCourse(id);
+    }
+
 }

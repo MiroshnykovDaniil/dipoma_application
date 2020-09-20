@@ -4,6 +4,8 @@ import com.diploma.application.model.User;
 import com.diploma.application.model.course.Course;
 import com.diploma.application.model.course.Lesson;
 import com.diploma.application.repository.course.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.Set;
 
 @Service
 public class CourseService {
+
+    private final Logger logger = LogManager.getLogger();
 
     @Autowired
     CourseDataRepository courseDataRepository;
@@ -37,6 +41,8 @@ public class CourseService {
     }
 
     public Course getCourse(String id){
+        logger.info("getCourse:id:"+id);
+        logger.info("getCourse:courserep.getone"+courseRepository.getOne(id));
         return courseRepository.getOne(id);
     }
 

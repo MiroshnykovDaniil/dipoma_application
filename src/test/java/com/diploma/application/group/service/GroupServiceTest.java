@@ -62,7 +62,7 @@ public class GroupServiceTest extends DiplomaApplicationTests {
 
         Group group = groupService.createGroup(user,"Title");
 
-        groupService.addMembers(group,userSet);
+        groupService.addMembers(group.getId(),userSet);
         assertThat(group.getMembers()).isNotEmpty();
 
 

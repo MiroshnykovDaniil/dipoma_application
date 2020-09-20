@@ -110,22 +110,6 @@ public class AuthController {
     }
 
 
-
-//    @PostMapping("/auth")
-//    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
-//        try{
-//            authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),authenticationRequest.getPassword())
-//        );
-//        } catch(BadCredentialsException e){
-//            throw new Exception("Incorrect username or pass",e);
-//        }
-//
-//        final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-//        final String jwt = jwtTokenUtil.generateToken(userDetails);
-//        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-//    }
-
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 

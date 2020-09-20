@@ -2,6 +2,9 @@ package com.diploma.application.model.course;
 
 
 import com.diploma.application.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,6 +17,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity(name = "course")
+@JsonSerialize
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Course {
 
     @Id
@@ -35,6 +40,9 @@ public class Course {
     @JoinColumn(name = "lesson_id")
     @OneToMany
     private Set<Lesson> lessons;
+
+
+    //private boolean isPrivate;
 
 
 }
