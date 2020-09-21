@@ -25,6 +25,7 @@ public class Lesson {
     private String title;
     private String description;
 
+
     @OneToMany
     @JoinColumn(name = "lesson_data_id")
     private Set<CourseData> lessonData;
