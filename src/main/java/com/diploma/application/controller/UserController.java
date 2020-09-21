@@ -1,6 +1,7 @@
 package com.diploma.application.controller;
 
 import com.diploma.application.model.User;
+import com.diploma.application.projection.user.UserOnlyInfoProjection;
 import com.diploma.application.security.CurrentUser;
 import com.diploma.application.security.UserPrincipal;
 import com.diploma.application.service.UserService;
@@ -33,8 +34,8 @@ public class UserController {
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal){
-        return userService.findById(userPrincipal.getId());
+    public UserOnlyInfoProjection getCurrentUser(@CurrentUser UserPrincipal userPrincipal){
+        return userService.findProjectionById(userPrincipal.getId());
     }
 
     @PostMapping("/addTeacherRole")

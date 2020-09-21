@@ -4,6 +4,7 @@ package com.diploma.application.service;
 import com.diploma.application.model.Group;
 import com.diploma.application.model.User;
 import com.diploma.application.model.course.Course;
+import com.diploma.application.projection.group.GroupProjection;
 import com.diploma.application.repository.GroupRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,7 +71,7 @@ public class GroupService {
         return group;
     }
 
-    public List<Group> getGroupList(String id){
+    public List<GroupProjection> getGroupList(String id){
         logger.info("getGroupList:"+groupRepository.findAllByMembers(userService.findById(id)));
         return groupRepository.findAllByMembers(userService.findById(id));
     }

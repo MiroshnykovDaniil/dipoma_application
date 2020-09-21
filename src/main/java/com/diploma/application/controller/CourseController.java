@@ -5,6 +5,7 @@ import com.diploma.application.model.course.Course;
 import com.diploma.application.model.course.Lesson;
 import com.diploma.application.model.course.data.quiz.FreeAnswerQuestion;
 import com.diploma.application.model.course.data.quiz.Question;
+import com.diploma.application.projection.course.CourseProjectionWithLessons;
 import com.diploma.application.security.CurrentUser;
 import com.diploma.application.security.UserPrincipal;
 import com.diploma.application.service.UserService;
@@ -81,7 +82,7 @@ public class CourseController {
     }
 
     @GetMapping()
-    public Course getCourse(@RequestParam String id){
+    public CourseProjectionWithLessons getCourse(@RequestParam String id){
         logger.info("CourseController: getCourse: id:"+id);
         return courseService.getCourse(id);
     }

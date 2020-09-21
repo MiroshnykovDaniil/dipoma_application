@@ -3,6 +3,7 @@ package com.diploma.application.service.course;
 import com.diploma.application.model.User;
 import com.diploma.application.model.course.Course;
 import com.diploma.application.model.course.Lesson;
+import com.diploma.application.projection.course.CourseProjectionWithLessons;
 import com.diploma.application.repository.course.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,10 +41,10 @@ public class CourseService {
         return course;
     }
 
-    public Course getCourse(String id){
+    public CourseProjectionWithLessons getCourse(String id){
         logger.info("getCourse:id:"+id);
         logger.info("getCourse:courserep.getone"+courseRepository.getOne(id));
-        return courseRepository.getOne(id);
+        return courseRepository.getById(id);
     }
 
     public Course addLesson(Course course, String title, String description){

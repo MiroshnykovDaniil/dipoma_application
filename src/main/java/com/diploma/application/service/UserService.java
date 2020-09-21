@@ -4,6 +4,8 @@ import com.diploma.application.exception.OAuth2AuthenticationProcessingException
 import com.diploma.application.model.AuthProvider;
 import com.diploma.application.model.Role;
 import com.diploma.application.model.User;
+import com.diploma.application.projection.user.UserOnlyInfoProjection;
+import com.diploma.application.repository.UserProjectionRepository;
 import com.diploma.application.repository.UserRepository;
 import com.diploma.application.security.UserPrincipal;
 import com.diploma.application.security.oauth2.OAuth2UserInfo;
@@ -33,12 +35,14 @@ import org.springframework.util.StringUtils;
 public class UserService extends DefaultOAuth2UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final UserProjectionRepository userProjectionRepository;
 
 
     private final PasswordEncoder passwordEncoder;
 
-    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    UserService(UserRepository userRepository, UserProjectionRepository userProjectionRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.userProjectionRepository = userProjectionRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -53,8 +57,12 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
         return userRepository.findAll();
     }
 
+    public UserOnlyInfoProjection findProjectionById(String id){
+        return userProjectionRepository.getDistinctTopById(id);
+    }
+
     public User findById(String id){
-        return userRepository.findById(id).orElseThrow(() ->new EntityNotFoundException(id));
+        return userRepository.getOne(id);
     }
 
     public void register(String name, String pass){

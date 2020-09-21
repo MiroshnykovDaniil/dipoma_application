@@ -3,6 +3,7 @@ package com.diploma.application.controller;
 
 import com.diploma.application.model.Group;
 import com.diploma.application.model.User;
+import com.diploma.application.projection.group.GroupProjection;
 import com.diploma.application.security.CurrentUser;
 import com.diploma.application.security.UserPrincipal;
 import com.diploma.application.service.GroupService;
@@ -55,12 +56,12 @@ public class GroupController {
     }
 
     @GetMapping("/getList")
-    public List<Group> getGroupList(@CurrentUser UserPrincipal userPrincipal){
+    public List<GroupProjection> getGroupList(@CurrentUser UserPrincipal userPrincipal){
         return groupService.getGroupList(userPrincipal.getId());
     }
 
     @GetMapping("/getListForUser")
-    public List<Group> getGroupLitByUserId(@RequestParam String id){
+    public List<GroupProjection> getGroupLitByUserId(@RequestParam String id){
         return groupService.getGroupList(id);
     }
 }
