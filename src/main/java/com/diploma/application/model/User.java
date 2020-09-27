@@ -29,7 +29,7 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Username cannot be empty or consist of spaces")
     private String name;
-    @NotBlank(message = "Password cannot be empty or consist of spaces")
+    //@NotBlank(message = "Password cannot be empty or consist of spaces") - not need cause of oauth
     private String password;
 
     @Email(message = "email is not correct")
