@@ -26,8 +26,7 @@ public class CourseService {
     ImageDataRepository imageDataRepository;
     @Autowired
     TextDataRepository textDataRepository;
-    @Autowired
-    TextImageDataRepository textImageDataRepository;
+
     @Autowired
     LessonRepository lessonRepository;
 
