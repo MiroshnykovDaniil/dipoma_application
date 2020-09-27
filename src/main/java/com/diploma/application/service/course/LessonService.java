@@ -2,6 +2,7 @@ package com.diploma.application.service.course;
 
 import com.diploma.application.model.course.Lesson;
 import com.diploma.application.model.course.data.CourseData;
+import com.diploma.application.model.course.data.PdfData;
 import com.diploma.application.model.course.data.quiz.Quiz;
 import com.diploma.application.repository.course.LessonRepository;
 import com.diploma.application.service.course.quiz.QuizService;
@@ -29,6 +30,15 @@ public class LessonService {
         lesson.setTitle(title);
         lesson.setDescription(description);
         lesson.setLessonData(new HashSet<>());
+        lessonRepository.save(lesson);
+        return lesson;
+    }
+
+    public Lesson addPdf(Lesson lesson, PdfData pdfData){
+        lesson = lessonRepository.getOne(lesson.getId());
+        Set<CourseData> courseDataSet = lesson.getLessonData();
+        courseDataSet.add(pdfData);
+        lesson.setLessonData(courseDataSet);
         lessonRepository.save(lesson);
         return lesson;
     }

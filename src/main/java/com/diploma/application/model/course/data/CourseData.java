@@ -24,4 +24,6 @@ public class CourseData {
     private String title;
     @NotBlank(message = "data description cannot be empty")
     private String description;
+
+    private String dataType;
 }

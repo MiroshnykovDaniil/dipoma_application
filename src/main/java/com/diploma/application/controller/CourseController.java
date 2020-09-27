@@ -3,6 +3,7 @@ package com.diploma.application.controller;
 import com.diploma.application.model.User;
 import com.diploma.application.model.course.Course;
 import com.diploma.application.model.course.Lesson;
+import com.diploma.application.model.course.data.PdfData;
 import com.diploma.application.model.course.data.quiz.FreeAnswerQuestion;
 import com.diploma.application.model.course.data.quiz.Question;
 import com.diploma.application.projection.course.CourseProjectionWithLessons;
@@ -11,10 +12,8 @@ import com.diploma.application.security.UserPrincipal;
 import com.diploma.application.service.UserService;
 import com.diploma.application.service.course.CourseService;
 import com.diploma.application.service.course.LessonService;
-import com.diploma.application.util.ApiResponse;
-import com.diploma.application.util.CourseCreateRequest;
-import com.diploma.application.util.LessonCreateRequest;
-import com.diploma.application.util.QuizCreateRequest;
+import com.diploma.application.service.course.data.PdfDataService;
+import com.diploma.application.util.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +39,8 @@ public class CourseController {
     CourseService courseService;
     @Autowired
     LessonService lessonService;
+    @Autowired
+    PdfDataService pdfDataService;
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@CurrentUser UserPrincipal userPrincipal,@Valid @RequestBody CourseCreateRequest createRequest) throws URISyntaxException {
@@ -75,6 +76,19 @@ public class CourseController {
         return ResponseEntity.created(new URI(lesson.getId()))
                 .body(new ApiResponse(true, "Quiz for lesson was created successfully"));
     }
+
+    @PostMapping("/lesson/add/pdf")
+    public ResponseEntity<?> createPdfRequest(@Valid @RequestBody PdfCreateRequest createRequest) throws URISyntaxException {
+        PdfData pdfData = pdfDataService.createPdf(createRequest.getPdfData().getPath());
+        pdfData.savePdf(createRequest.getPdf(),pdfData.getId(),pdfData.getPath());
+        Lesson lesson = lessonService.getLesson(createRequest.getLesson().getId());
+        lessonService.addPdf(lesson,pdfData);
+        return ResponseEntity.created(new URI(pdfData.getId()))
+                .body(new ApiResponse(true, "PDF file for lesson was created successfully"));
+
+    }
+
+
 
     @GetMapping("/lesson")
     public Lesson getLesson(@RequestParam String id){

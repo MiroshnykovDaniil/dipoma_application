@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 @Entity(name = "pdf_data")
 @Data
 @NoArgsConstructor
-public class PdfData {
+public class PdfData extends CourseData {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -27,7 +27,12 @@ public class PdfData {
     @NotBlank(message = "PDF path cannot be blank")
     private String path;
 
-    public void savePdf(byte[] PdfByteArray,String filename, String path){
+    @Override
+    public String getDataType() {
+        return "PDF";
+    }
+
+    public void savePdf(byte[] PdfByteArray, String filename, String path){
         try{
             OutputStream out = new FileOutputStream(path+filename+".pdf");
             out.write(PdfByteArray);
@@ -44,5 +49,4 @@ public class PdfData {
         Path pdfPath = Paths.get(path+filename+".pdf");
         return Files.readAllBytes(pdfPath);
     }
-
 }
