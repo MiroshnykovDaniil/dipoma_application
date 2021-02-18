@@ -85,7 +85,6 @@ public class CourseController {
         lessonService.addPdf(lesson,pdfData);
         return ResponseEntity.created(new URI(pdfData.getId()))
                 .body(new ApiResponse(true, "PDF file for lesson was created successfully"));
-
     }
 
 
