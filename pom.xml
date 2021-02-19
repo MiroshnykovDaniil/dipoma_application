@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Diploma application</name>
     <description>My diploma application</description>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -103,9 +104,17 @@
             <version>6.1.5.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
+        <finalName>DiplomaApplication</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -113,4 +122,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
