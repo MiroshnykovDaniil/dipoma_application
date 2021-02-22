@@ -10,7 +10,8 @@ spring:
   datasource:
     platform: mysql
     url: jdbc:mysql://127.0.0.1:3306/diploma
-    username: root
+    username: user
+    password: danielq
   security:
     oauth2:
       client:
