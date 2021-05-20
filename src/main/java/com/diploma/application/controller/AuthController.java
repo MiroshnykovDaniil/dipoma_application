@@ -64,9 +64,6 @@ public class AuthController {
         System.out.println(loginRequest.getEmail());
         System.out.println(loginRequest.getPassword());
         User user = userService.loadByEmail(loginRequest.getEmail());
-//        System.out.println(user.getEmail());
-//        System.out.println(user.getPassword());
-
         System.out.println("creating authentication");
 
         Authentication authentication = authenticationManager.authenticate(
@@ -87,18 +84,6 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-
-        // Creating user's account
-//        User user = new User();
-//        user.setName(signUpRequest.getName());
-//        user.setEmail(signUpRequest.getEmail());
-//        user.setPassword(signUpRequest.getPassword());
-//        user.setProvider(AuthProvider.local);
-//
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//
-//        User result = userRepository.save(user);
-
         User user = userService.registerLocal(signUpRequest);
 
         URI location = ServletUriComponentsBuilder

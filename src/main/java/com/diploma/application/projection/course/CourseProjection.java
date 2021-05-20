@@ -15,4 +15,6 @@ public interface CourseProjection {
 
 
     UserOnlyInfoProjection getCreator();
+
+
 }

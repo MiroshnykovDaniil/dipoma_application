@@ -36,6 +36,8 @@ public class CourseRepositoryTest extends DiplomaApplicationTests {
     public void courseRepositoryTest(){
         Course course = new Course();
         User creator = new User();
+        creator.setName("name");
+        creator.setEmail("111@mail.com");
         userRepository.save(creator);
         course.setCreator(creator);
         course.setTitle("title");

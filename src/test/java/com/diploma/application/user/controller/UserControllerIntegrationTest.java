@@ -13,11 +13,15 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,6 +41,10 @@ public class UserControllerIntegrationTest extends DiplomaApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext context;
+
 
     @Before
     public void startTesting() {
@@ -86,13 +94,16 @@ public class UserControllerIntegrationTest extends DiplomaApplicationTests {
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    void selectUser() throws Exception{
-//        mockMvc.perform(
-//                get("/users/me")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//
-//        )
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    @WithUserDetails(value = "06bd8ece-1a3e-4a85-b97a-5915232e7648")
+    void selectUser() throws Exception{
+        String token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyYTY3ZTNkMy00NTBiLTQzYjAtYTRlZC05MTgxZTRiNjdmYzEiLCJpYXQiOjE2MjEyNzAwMDAsImV4cCI6MTYyMjEzNDAwMH0.V8-mrT6uACC-HieMofwE6nW33nhRjZRyLYX_CDRF19DhkSs8TUdBcYBti5pedvN2O7ShSCycQSsbweQHyHTWmg";
+        mockMvc.perform(
+                get("/users/me")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+
+        )
+                .andExpect(status().isOk());
+    }
 }

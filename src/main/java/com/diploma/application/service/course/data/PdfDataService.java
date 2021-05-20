@@ -36,11 +36,21 @@ public class PdfDataService {
         return pdfData;
     }
 
+    public PdfData savePdf(String title, String description, byte[] file){
+        PdfData pdfData = new PdfData();
+        pdfData.setTitle(title);
+        pdfData.setDescription(description);
+        pdfData.setPath("d:\\");
+        pdfDataRepository.save(pdfData);
+        return savePdf(pdfData,file);
+    }
+
     public byte[] getPdfByteArray(String id) throws IOException {
         PdfData pdfData = pdfDataRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
         logger.info("getPdfByteArray: path:"+pdfData.getPath()+";id: "+pdfData.getId());
         return pdfData.getPdf(pdfData.getPath(),pdfData.getId());
     }
+
 
     public PdfData getPdfData(String id){
         return pdfDataRepository.getOne(id);

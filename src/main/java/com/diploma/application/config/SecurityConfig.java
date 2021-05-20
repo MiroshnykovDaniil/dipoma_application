@@ -53,10 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
-
-    //    @Autowired
-//    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-
     @Autowired
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
@@ -121,41 +117,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
-
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception
-//    {
-//        http.csrf().disable()
-//            .authorizeRequests()
-//                .antMatchers("/auth","/","login.html","/login").permitAll()
-//                .anyRequest().authenticated()
-//    //                .and().oauth2Login()
-////            .and()
-////                .oauth2ResourceServer()
-////                    .jwt()
-////                .and().oauth2Login()
-////                .loginPage("/auth/custom-login")
-////                .authorizationEndpoint()
-////                .baseUri("/oauth2/authorize")
-////                .authorizationRequestRepository(customAuthorizationRequestRepository())
-////                //and()
-////               // .successHandler(customAuthenticationSuccessHandler)
-////                .and()
-////                .defaultSuccessUrl("/loginSuccess");
-//        ;
-//        http.sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//              //  .and()
-//              //  .oauth2Login();
-//    }
-
-//    @Bean
-//    public AuthorizationRequestRepository<OAuth2AuthorizationRequest> customAuthorizationRequestRepository() {
-//        return new HttpSessionOAuth2AuthorizationRequestRepository();
-//    }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

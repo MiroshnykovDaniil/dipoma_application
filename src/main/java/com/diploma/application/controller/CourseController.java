@@ -6,6 +6,7 @@ import com.diploma.application.model.course.Lesson;
 import com.diploma.application.model.course.data.PdfData;
 import com.diploma.application.model.course.data.quiz.FreeAnswerQuestion;
 import com.diploma.application.model.course.data.quiz.Question;
+import com.diploma.application.projection.course.CourseProjection;
 import com.diploma.application.projection.course.CourseProjectionWithLessons;
 import com.diploma.application.security.CurrentUser;
 import com.diploma.application.security.UserPrincipal;
@@ -13,6 +14,7 @@ import com.diploma.application.service.UserService;
 import com.diploma.application.service.course.CourseService;
 import com.diploma.application.service.course.LessonService;
 import com.diploma.application.service.course.data.PdfDataService;
+import com.diploma.application.service.course.data.VideoDataService;
 import com.diploma.application.util.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,13 +27,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Set;
 
 @RestController()
-@RequestMapping("course")
+@RequestMapping("/course")
 
 public class CourseController {
     private final Logger logger = LogManager.getLogger();
-
 
     @Autowired
     UserService userService;
@@ -41,6 +44,7 @@ public class CourseController {
     LessonService lessonService;
     @Autowired
     PdfDataService pdfDataService;
+
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@CurrentUser UserPrincipal userPrincipal,@Valid @RequestBody CourseCreateRequest createRequest) throws URISyntaxException {
@@ -87,8 +91,6 @@ public class CourseController {
                 .body(new ApiResponse(true, "PDF file for lesson was created successfully"));
     }
 
-
-
     @GetMapping("/lesson")
     public Lesson getLesson(@RequestParam String id){
         return lessonService.getLesson(id);
@@ -98,6 +100,18 @@ public class CourseController {
     public CourseProjectionWithLessons getCourse(@RequestParam String id){
         logger.info("CourseController: getCourse: id:"+id);
         return courseService.getCourse(id);
+    }
+
+    @GetMapping("/author")
+    public Set<CourseProjectionWithLessons> getCoursesByCurrentAuthor(@CurrentUser UserPrincipal userPrincipal){
+        logger.info("CourseController: getCoursesByCurrentAuthor: CurrentUser:"+userPrincipal);
+        return courseService.getCoursesByAuthorId(userPrincipal);
+    }
+
+    @GetMapping("/all")
+    public List<Course> getCourses(@CurrentUser UserPrincipal userPrincipal){
+        logger.info("CourseController: getCourses:");
+        return courseService.getCourses();
     }
 
 }
