@@ -9,7 +9,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     platform: mysql
-    url: jdbc:mysql://127.0.0.1:3306/diploma
+    url: jdbc:mysql://127.0.0.1:3306/diploma?useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8
     username: user
     password: danielq
   security:
