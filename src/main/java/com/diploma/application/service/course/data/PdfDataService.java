@@ -5,6 +5,7 @@ import com.diploma.application.repository.course.PdfDataRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,14 @@ public class PdfDataService {
         return pdfData;
     }
 
+    @Value("${my.property}")
+    private String pathToSave;
+
     public PdfData savePdf(String title, String description, byte[] file){
         PdfData pdfData = new PdfData();
         pdfData.setTitle(title);
         pdfData.setDescription(description);
-        pdfData.setPath("d:\\");
+        pdfData.setPath(pathToSave);
         pdfDataRepository.save(pdfData);
         return savePdf(pdfData,file);
     }

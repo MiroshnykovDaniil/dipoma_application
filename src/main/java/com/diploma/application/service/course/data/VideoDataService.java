@@ -7,6 +7,7 @@ import com.diploma.application.repository.course.VideoRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class VideoDataService {
 
     @Autowired
     private final VideoRepository videoRepository;
+
+    @Value("${my.property}")
+    private String pathToSave;
 
     public VideoDataService(VideoRepository videoRepository) {
         this.videoRepository = videoRepository;
@@ -37,7 +41,7 @@ public class VideoDataService {
         VideoData videoData = new VideoData();
         videoData.setTitle(title);
         videoData.setDescription(description);
-        videoData.setPath("d:\\");
+        videoData.setPath(pathToSave);
         videoRepository.save(videoData);
         return saveVideo(videoData,file);
     }
